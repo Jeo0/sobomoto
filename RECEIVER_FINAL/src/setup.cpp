@@ -4,10 +4,14 @@
 void SetupESPNOW() {
     Serial.begin(115200);
 
-    for (auto &ii : MOTOR_PINS) pinMode(ii, OUTPUT);
+    for (auto &ii : MOTOR_PINS) {
+        pinMode(ii, OUTPUT);
+        digitalWrite(ii, LOW);
+    }
+
+    // always enable the EN PINS
     digitalWrite(EN_A, HIGH);
     digitalWrite(EN_B, HIGH);
-    // always enable the EN PINS
 
 
     WiFi.mode(WIFI_STA);

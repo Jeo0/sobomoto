@@ -14,6 +14,13 @@
 
 extern uint8_t MOTOR_PINS[6];
 extern std::bitset<7> g_buffer;
+extern std::bitset<7> prev_buffer;
+
+extern const unsigned long frameInterval;
+extern unsigned long frameStart;
+
+extern int leftDuty;
+extern int rightDuty;
 
 void SetupESPNOW();
 
