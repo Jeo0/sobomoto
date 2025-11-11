@@ -48,6 +48,8 @@ void DetermineState(const std::bitset<7>& buf) {
                 case 2: TurnRight();    break;
                 case 3: TurnLeft();     break;
             }
+        } else { // stop fully if nothing else anmymore
+            StopMainMotors();  
         }
     }
 

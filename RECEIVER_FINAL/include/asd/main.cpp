@@ -25,10 +25,10 @@ void loop() {
     // Only process if buffer changed
     if (g_buffer != prev_buffer) {
         prev_buffer = g_buffer;
-        DetermineState(g_buffer);
 
         Serial.print("State: ");
         Serial.println(g_buffer.to_string().c_str());
     }
+    DetermineState(g_buffer);
 }
 
