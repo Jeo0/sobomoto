@@ -27,7 +27,7 @@ void DetermineState(const std::bitset<7>& buf) {
 
     //////////////////////////////////////////
     // drive controls
-    if (forward){
+    /*if (forward){
         MoveForward();
         g_lastDriveState = 0;
     } else if (reverse){
@@ -50,6 +50,21 @@ void DetermineState(const std::bitset<7>& buf) {
             }
         }
     }
+    */ 
+    if (forward) {
+        MoveForward();
+    } else if (reverse) {
+        MoveBackward();
+    } else if (right) {
+        TurnRight();
+    } else if (left) {
+        TurnLeft();
+    } else {
+        StopMainMotors();
+    }
+    // always enable the driver motor EN PINS
+    digitalWrite(EN_A, HIGH);
+    digitalWrite(EN_B, HIGH);
 
     //////////////////////////////////////////
     // spin attack controls
@@ -87,7 +102,9 @@ void SpinMotor(const bool e_spinState[2] ){
     // switching direction
     if (newDirection != g_lastSpinDirection) {
         // brake first
-        BrakeSpinMotor();
+        digitalWrite(IN_A, HIGH);
+        digitalWrite(IN_B, HIGH);
+        // BrakeSpinMotor();
         g_brakingActive = true;
         g_brakeStartTime = millis();
 
@@ -98,10 +115,11 @@ void SpinMotor(const bool e_spinState[2] ){
 
     // now brake
     // if braking do check if duration passed
+    /*
     if (g_brakingActive) {
         BrakeSpinMotor();
         return;
-    }
+    }*/
 
 
     // now spin if not braking (refer to cw bit only or e_spinState[0])
@@ -124,6 +142,7 @@ void SpinMotor(const bool e_spinState[2] ){
 // ============================================
 // BRAKE & STOP HELPERS
 // ============================================
+/*
 void BrakeSpinMotor() {
     unsigned long now = millis();
 
@@ -146,6 +165,12 @@ void BrakeSpinMotor() {
         digitalWrite(IN_A, HIGH);
         digitalWrite(IN_B, HIGH);
     }
+}
+*/
+void BrakeSpinMotor() {
+    // Simple brake - set both HIGH
+    digitalWrite(IN_A, HIGH);
+    digitalWrite(IN_B, HIGH);
 }
 
 
