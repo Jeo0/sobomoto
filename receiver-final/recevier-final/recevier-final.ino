@@ -11,6 +11,11 @@
 // #define MOTOR_4    16  // 4 L_BACKWARD
 // #define EN_B        4
 
+// spin motor (attack)
+// #define IN_A    26
+// #define IN_B    27
+
+// =========================================================
 // for ESP 32 CAM
 // EN_A and EN_B are pulled up by default (HIGH)
 // #define EN_A        19
