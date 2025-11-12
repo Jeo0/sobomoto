@@ -2,17 +2,27 @@
 #include <bitset>
 #include <esp_now.h>
 
+// for normal esp 32
 // main driver motors
-#define EN_A        19
-#define MOTOR_1    18  // 1 R_FORWARD
-#define MOTOR_2    5   // 2 R_BACKWARD
-#define MOTOR_3    17  // 3 L_FORWARD
-#define MOTOR_4    16  // 4 L_BACKWARD
-#define EN_B        4
+// #define EN_A        19
+// #define MOTOR_1    18  // 1 R_FORWARD
+// #define MOTOR_2    5   // 2 R_BACKWARD
+// #define MOTOR_3    17  // 3 L_FORWARD
+// #define MOTOR_4    16  // 4 L_BACKWARD
+// #define EN_B        4
+
+// for ESP 32 CAM
+// EN_A and EN_B are pulled up by default (HIGH)
+// #define EN_A        19
+#define MOTOR_1    2  // 1 R_FORWARD
+#define MOTOR_2    14  // 2 R_BACKWARD
+#define MOTOR_3    15  // 3 L_FORWARD
+#define MOTOR_4    13  // 4 L_BACKWARD
+// #define EN_B        4
 
 // spin motor (attack)
-#define IN_A    26
-#define IN_B    27
+#define IN_A    12
+#define IN_B    4
 
 
 
@@ -55,10 +65,10 @@ void setup() {
         digitalWrite(ii, LOW);
     }
     // always enable the driver motor EN PINS
-    pinMode(EN_A, OUTPUT);
-    pinMode(EN_A, OUTPUT);
-    digitalWrite(EN_A, HIGH);
-    digitalWrite(EN_B, HIGH);
+    // pinMode(EN_A, OUTPUT);
+    // pinMode(EN_A, OUTPUT);
+    // digitalWrite(EN_A, HIGH);
+    // digitalWrite(EN_B, HIGH);
 
     // the spin attack motor as output too
     pinMode(IN_A, OUTPUT);
@@ -122,8 +132,8 @@ void DetermineState(const std::bitset<7>& buf) {
         StopMainMotors();
     }
     // always enable the driver motor EN PINS
-    digitalWrite(EN_A, HIGH);
-    digitalWrite(EN_B, HIGH);
+    // digitalWrite(EN_A, HIGH);
+    // digitalWrite(EN_B, HIGH);
 
     //////////////////////////////////////////
     // spin attack controls

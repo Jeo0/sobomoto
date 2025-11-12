@@ -28,10 +28,12 @@ void InputCommand(uint8_t p_pin, uint8_t p_iterator);
 // address of receiver (usb1)=  68:FE:71:88:78:38
 // address of transmit (usb0)=  EC:E3:34:D9:C1:DC
 // address of receiver (esp32d)=5C:01:3B:34:66:18
+// address of receiver(esp32 cam akin)=00:4B:12:96:16:50
 
 
 // uint8_t receptorAddress[] = {0x68, 0xFE, 0x71, 0x88, 0x78, 0x38};  // old sira? esp32
-uint8_t receptorAddress[] = {0x5C, 0x01, 0x3B, 0x34, 0x66, 0x18};  // new esp32d (without antenna)
+// uint8_t receptorAddress[] = {0x5C, 0x01, 0x3B, 0x34, 0x66, 0x18};  // new esp32d (without antenna)
+uint8_t receptorAddress[] = {0x00, 0x4B, 0x12, 0x96, 0x16, 0x50};  // esp32 cam akin 
 uint8_t inputArray[] = {IKOT_PIN, FORWARD_PIN, LEFT_PIN, LEFTBOOST_PIN, RIGHT_PIN, RIGHTBOOST_PIN, REVERSE_PIN};
 
 
