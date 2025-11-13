@@ -98,6 +98,14 @@ void setup() {
 
 // =================== MAIN LOOP ===================
 void loop() {
+  // Handle braking timeout
+    if (g_brakingActive) {
+        if (millis() - g_brakeStartTime >= g_brakeDuration) {
+            g_brakingActive = false;
+            digitalWrite(IN_A, LOW);
+            digitalWrite(IN_B, LOW);
+        }
+    }
     DetermineState(g_buffer);
 
     Serial.print("State: ");
@@ -110,6 +118,8 @@ void loop() {
 // DEFINITIONS
 // ===================
 void DetermineState(const std::bitset<7>& buf) {
+// uint8_t inputArray[] = {IKOT_PIN, FORWARD_PIN, LEFT_PIN, LEFTBOOST_PIN, RIGHT_PIN, RIGHTBOOST_PIN, REVERSE_PIN};
+
     // buffers for spin attak
     bool cw     = buf[5];
     bool ccw    = buf[3];
@@ -125,17 +135,38 @@ void DetermineState(const std::bitset<7>& buf) {
 
     //////////////////////////////////////////
     // drive controls
+    /*
+    Serial.println(buf[1]);
+    Serial.println(buf[6]);
+    Serial.println(buf[4]);
+    Serial.println(buf[2]);
+    */
     if (forward) {
         MoveForward();
+        //Serial.println("Forward");
     } else if (reverse) {
         MoveBackward();
+        //Serial.println("Reverse");
     } else if (right) {
         TurnRight();
+        //Serial.println("Right");
     } else if (left) {
         TurnLeft();
+        //Serial.println("Left");
     } else {
         StopMainMotors();
+        //Serial.println("Stop");
     }
+    /*
+    mot1 = digitalRead(MOTOR_1);
+    Serial.println(mot1);
+    mot2 = digitalRead(MOTOR_2);
+    Serial.println(mot2);
+    mot3 = digitalRead(MOTOR_3);
+    Serial.println(mot3);
+    mot4 = digitalRead(MOTOR_4);
+    Serial.println(mot4);
+    */
     // always enable the driver motor EN PINS
     // digitalWrite(EN_A, HIGH);
     // digitalWrite(EN_B, HIGH);
