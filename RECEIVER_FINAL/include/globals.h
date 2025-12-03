@@ -6,48 +6,46 @@
 #include <esp_now.h>
 #include <bitset>
 
+// for normal esp 32
 // main driver motors
-#define EN_A        19
-#define MOTOR_1    18  // 1 R_FORWARD
-#define MOTOR_2    5   // 2 R_BACKWARD
-#define MOTOR_3    17  // 3 L_FORWARD
-#define MOTOR_4    16  // 4 L_BACKWARD
-#define EN_B        4
+// #define EN_A        19
+// #define MOTOR_1    18  // 1 R_FORWARD
+// #define MOTOR_2    5   // 2 R_BACKWARD
+// #define MOTOR_3    17  // 3 L_FORWARD
+// #define MOTOR_4    16  // 4 L_BACKWARD
+// #define EN_B        4
 
 // spin motor (attack)
-#define IN_A    26
-#define IN_B    27
+// #define IN_A    26
+// #define IN_B    27
 
-/*
-    Give me an arduino program that does the following:
-    1. there are four main driver motors and here are the pin definitions:
-// main driver motors
-#define EN_A        19
-#define MOTOR_1    18  // 1 R_FORWARD
-#define MOTOR_2    5   // 2 R_BACKWARD
-#define MOTOR_3    17  // 3 L_FORWARD
-#define MOTOR_4    16  // 4 L_BACKWARD
-#define EN_B        4
+// =========================================================
+// for ESP 32 CAM
+// EN_A and EN_B are pulled up by default (HIGH)
+// #define EN_A        19
+// #define MOTOR_1    2  // 1 R_FORWARD
+// #define MOTOR_2    14  // 2 R_BACKWARD
+// #define MOTOR_3    15  // 3 L_FORWARD
+// #define MOTOR_4    13  // 4 L_BACKWARD
+// #define EN_B        4
 
-    1.1 another motor is also used
 // spin motor (attack)
-#define IN_A    26
-#define IN_B    27
+// #define IN_A    12
+// #define IN_B    4
 
-    2. We are given a bitset of command (7)
-        // buffers for spin attak
-    bool cw     = buf[5];
-    bool ccw    = buf[3];
-    bool spin   = buf[0];
-    bool spinState[2] {cw, ccw};
+// =========================================================
+// for ESP 32 CAM NI LKENENTH
+// EN_A and EN_B are pulled up by default (HIGH)
+// #define EN_A        2
+#define MOTOR_1    33 // 1 R_FORWARD
+#define MOTOR_2    15  // 2 R_BACKWARD
+#define MOTOR_3    14  // 3 L_FORWARD
+#define MOTOR_4    13  // 4 L_BACKWARD
+// #define EN_B        12
 
-    // buffers for drive
-    bool forward  = buf[1];
-    bool left     = buf[2];
-    bool right    = buf[4];
-    bool reverse  = buf[6];
-*/
-    
+// spin motor (attack)
+#define IN_A    2
+#define IN_B    12
 
 
 /////////////////////////////////////////////
