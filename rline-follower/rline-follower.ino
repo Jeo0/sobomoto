@@ -4,25 +4,24 @@
 #include "motor_base.h"
 #include "pid.h"
 
-
+int g_inputBuff [2];
 
 void setup() {
-    Serial.begin(115200);
+  Serial.begin(115200);
 
-    Motor bading();
-    bading.Init();
+  Motor Bading;
 
 
-    WiFi.mode(WIFI_STA);
-    if (esp_now_init() != ESP_OK) {
-        Serial.println("fuk u");
-        return;
-    }
-    esp_now_register_recv_cb([](const esp_now_recv_info_t *info, const uint8_t *data, int len) {
-        if (len == 1) {
-            // g_buffer = std::bitset<7>(data[0]);
-        }
-    });
+  WiFi.mode(WIFI_STA);
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("fuk u");
+    return;
+  }
+  esp_now_register_recv_cb([](const esp_now_recv_info_t *info, const uint8_t *data, int len) {
+      if (len == 1) {
+      // g_buffer = std::bitset<7>(data[0]);
+      }
+      });
 
 }
 
@@ -33,8 +32,16 @@ void loop() {
   // always straihgt 
   // PID control with the steering
   // allow pwm
-  state 
-    Serial.print("State: ");
-    delay(5);
+  
+  // read
+  g_inputBuff = {digitalRead(IR_NW), digitalRead(IR_NE)};
+
+  // 
+
+  if(g_inputBuff){
+    
+  }
+  Serial.print("State: ");
+  delay(5);
 }
 

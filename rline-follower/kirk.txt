@@ -1,0 +1,89 @@
+// instructions:
+// gawa ka nung motors na varying ang speed (by modifying the voltage you output sa EN_A and EN_B pins)
+// varying, meaning ung ndi one and zero ang output. Varying as in 0 to 1 with decimals like 0.1 0.5 0.6 0.9856 0.345 0.234 0.4564 etc.
+
+// notes:
+// regardless ng output mo sa R_FORWARD, R_BACKWARD, L_FORWARD, L_BACKWARD pins
+// si EN_A ang magcocontrol ng speed nung R_FORWARD, R_BACKWARD 
+// si EN_B ang magcocontrol ng speed nung L_FORWARD, L_BACKWARD 
+
+
+
+// ================== INPUT PINS ==================
+#include <system_error>
+#define POTENTIOMETER_RIGHT     12  // assume 0 ohms = reverse; 5k ohms = no spin; 10k ohms = forward spin
+#define POTENTIOMETER_LEFT      13  // assume 0 ohms = reverse; 5k ohms = no spin; 10k ohms = forward spin 
+
+
+// ================== OUTPUT PINS ==================
+#define EN_A            19  // PWM Right wheels
+#define MOTOR_R_F         18  // 1 R_FORWARD
+#define MOTOR_R_B         5   // 2 R_BACKWARD
+
+#define MOTOR_L_F         17  // 3 L_FORWARD
+#define MOTOR_L_B         16  // 4 L_BACKWARD
+#define EN_B            4   // PWM Left wheels
+
+int potrspeed = 0; // 0 = revcersr;     2048 = stop;    4095 = forward
+int motorstateright = 0; // -1 reverse;     0 stop;     1 forward
+int outputRightSpeed = 0;
+
+void setup() {
+    pinMode(POTENTIOMETER_RIGHT, INPUT);
+
+    pinMode(EN_A, OUTPUT);
+    pinMode(MOTOR_1, OUTPUT);
+    pinMode(MOTOR_2, OUTPUT);
+}
+
+void loop() {
+    ///////////////////////////////////// input 
+    potrspeed = analogRead(POTENTIOMETER_RIGHT);
+
+
+    ///////////////////////////////////// process 
+    // decide the state 
+    // motorRstate 
+    // output speed set 
+
+    // reverse
+    if 0 < =  potrspeed  &&  potrspeed < =  2048 {
+        motorStateRight = -1;
+    }
+
+    // stop 
+    if potrspeed == 2048 {
+        motorStateRight = 0;
+    }
+
+    // complete mo ung forward
+    
+
+    // decision how fast the real output speed is
+    // if potrspeed = 1000, then outputrightspeed = 1000
+    // if potrspeed = 3048, then outputrightspeed = 1000
+    outputRightSpeed = abs(potrspeed - 2048); 
+
+
+    ///////////////////////////////////// output
+    // decide which motor state the motor is in and output the en to that
+    if (motorstateright == -1) {
+        digitalWrite(MOTOR_1, LOW);
+        digitalWrite(MOTOR_2, HIGH);
+    }
+
+    else if (motorstateright == 0) {
+        digitalWrite(MOTOR_1, LOW);
+        digitalWrite(MOTOR_2, LOW);
+    }
+
+    else if (motorstateright == 1) {
+        digitalWrite(MOTOR_1, HIGH);
+        digitalWrite(MOTOR_2, LOW);
+    }
+
+    // pwm output  to enable_a pin
+    analogWrite(EN_A, outputRightSpeed);
+
+}
+
