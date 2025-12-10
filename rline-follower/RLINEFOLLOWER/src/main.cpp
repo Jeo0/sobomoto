@@ -9,8 +9,6 @@ void setup() {
   for (auto &ii: MOTOR_PINS) pinMode(ii, OUTPUT);
 
   SetupESPNOW();  // initialize ESP-NOW
-  
-  PID robot;
 }
 
 
@@ -52,63 +50,35 @@ void loop() {
         g_controlBuffer[ii] = mapped;
       }
     }
+
   }
 
+  // update the PID coefficients & settings 
+  // why do i need to loop jajajaja fak dat sht
+  g_Kpid[0] = g_controlBuffer[0]; // Kp
+  g_Kpid[1] = g_controlBuffer[1]; // Ki
+  g_Kpid[2] = g_controlBuffer[2]; // Kd
+  g_settings[0] = g_controlBuffer[3]; // SETTING_WHITEorBLACK
+  g_settings[1] = g_controlBuffer[4]; // GOGO_STOPSTOP
 
   // ===========================================
   // PROCESSING PROPER
   // ===========================================
   
-  // inputs: 
-  // g_lineBuffer = {0, 1, 1, 0}    <-- must look like this
-  // error is accumulated when the 0th or 3rd indices are 1
-  // error is accumulated when the 1st or 2nd indices are 0
-  // ===========================================
-  // computing error
-  // 1 means detects black
-  // measured     LA    LB    RY    RZ    Error_sum   Error_ave_based_on_#_of_active
-  //              0     1     1     0     0           0
-  //
-  //              1     1     1     0     -1          -.33
-  //              1     1     0     0     -1.5        -.75
-  //              1     0     0     0     -1          -1
-  //
-  //              0     1     1     1     +1          +.33
-  //              0     0     1     1     +1.5        +.75
-  //              0     0     0     1     +1          +1
-  
-  // input the g_lineBuffer 
+  // input the readinsg from IR sensors
   for(uint8_t ii=0; ii < N_IR; ii++) 
     g_lineBuffer[ii] = digitalRead(IR_PINS[ii]);
 
-  // set the IR weights
-  float irWeights[4] = {-1, -.5, .5, 1};
-
-  // compute the average 1
-  double accum_intermediate_measured = 0;
-  uint8_t accum_IR_number_active = 0;
-  for(uint8_t ii=0; ii < N_IR; ii++){
-    accum_intermediate_measured += (g_lineBuffer[ii] * irWeights[ii]);
-    accum_IR_number_active += g_lineBuffer[ii];
-  }
-  // compute the average 2
-  if (accum_IR_number_active == 0) accum_intermediate_measured = 0;   // the robot should be running straight
-  else accum_intermediate_measured /= accum_IR_number_active;
-  
   // ===========================================
-  // finalized measurement 
+  // PID steering
   // ===========================================
-  float measured = accum_intermediate_measured;
-
+  computeMeasured();
+  doPID();
   
   
-  
-
-  // ===========================================
-  // PID
-  // ===========================================
-  float setpoint = 0;
-  float error = setpoint - measured;
+  // set the new variables for the next frame
+  // setpoint is always 0
+  g_preverror = - g_measured;
 
 
   delay(10);
