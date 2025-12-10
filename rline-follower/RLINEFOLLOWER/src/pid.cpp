@@ -70,7 +70,5 @@ void doPID(){
     // compute total output
     float total_output = proportional + integral + derivative;
 
-    // set the new variables for the next frame
-    g_preverror = error;
     // return total_output;
 }
