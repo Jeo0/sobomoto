@@ -11,7 +11,7 @@ void enqueuePacket(const uint16_t* data, const uint8_t* mac) {
   uint8_t nextHead = (queueHead + 1) % MAX_QUEUE;
   if (nextHead == queueTail) return; // queue full, drop packet
 
-  memcpy(packetQueue[queueHead].data, data, sizeof(uint16_t) * N_INPUTS);
+  memcpy(packetQueue[queueHead].data, data, sizeof(uint16_t) * N_RECEIVE_INPUTS);
   memcpy(packetQueue[queueHead].senderMac, mac, 6);
   queueHead = nextHead;
 }
@@ -27,9 +27,9 @@ void printMac(const uint8_t* mac) {
 
 // ESP-NOW receive callback
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *incomingData, int len) {
-  if (len != N_INPUTS * sizeof(uint16_t)) return;
+  if (len != N_RECEIVE_INPUTS * sizeof(uint16_t)) return;
 
-  uint16_t tempBuffer[N_INPUTS];
+  uint16_t tempBuffer[N_RECEIVE_INPUTS];
   memcpy(tempBuffer, incomingData, len);
 
   enqueuePacket(tempBuffer, info->src_addr);
