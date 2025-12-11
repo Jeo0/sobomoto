@@ -1,9 +1,17 @@
 # folders:
-### source files for platformio
+### deprecated source files 
+#### for platformio
 - RECEVEIRE **for transmitter**
 - RECEVIER_FINAL **for receiver**
-
-### final flashed for arduino ide
-- macaddress (flash this to whatever so )
+  
+#### for arduino ide
 - receiver-final/recevier-final
 - tranmsitter-final/transmitter-final
+
+--- 
+
+### final tings
+- macaddress (flash this to whatever)
+- rline-follower/RLINEFOLLOWER
+- tline-follower/TLINEFOLLOWER
+
