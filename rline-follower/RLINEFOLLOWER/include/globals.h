@@ -43,3 +43,15 @@ extern std::bitset<N_IR> g_lineBuffer;  // the IR sensors
 // =========================================================
 // prototypes
 void doGoForward();
+
+extern bool getLineValue(uint8_t idx);
+
+// ====================================
+// ====================================
+// ====================================
+// ====================================
+// AI
+// ====================================
+// ====================================
+// globals.h (add near MOTOR_PINS)
+constexpr uint8_t MOTOR_CHANNELS[N_MOTOR] = {0, 1, 2, 3}; // ledc channels for each motor output

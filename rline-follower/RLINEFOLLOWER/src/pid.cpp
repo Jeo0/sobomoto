@@ -36,9 +36,9 @@ void PID::computeMeasuredSteering(){
   //
   //              0     1     1     1     +1          +.33
   //              0     0     1     1     +1.5        +.75
-  //              0     0     0     1     +1          +
+  //              0     0     0     1     +1          +1
     
-
+  
   // compute the average 1
   double accum_intermediate_measured = 0;
   uint8_t accum_IR_number_active = 0;

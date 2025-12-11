@@ -6,6 +6,15 @@ double g_controlBuffer[N_RECEIVE_INPUTS] {0};
 std::bitset<N_IR> g_lineBuffer;  // the IR sensors
 
 
+bool getLineValue(uint8_t idx){
+    bool raw = g_lineBuffer[idx];
+    if (g_settings[0] == 1) {
+        return !raw;     // white mode
+    }
+    return raw;          // black mode
+}
+
+
 void doGoForward(){
     /*inputs: MOTOR_PINS
      *          speed.output
@@ -35,6 +44,7 @@ void doGoForward(){
      */
 
 
+
     // Read/clamp PID outputs (assumes PID outputs are roughly -1..1)
     float base  = constrain(speed.output, -1.0f, 1.0f);
     float steer = constrain(steering.output, -1.0f, 1.0f);
@@ -50,30 +60,29 @@ void doGoForward(){
     };
 
     // Layout: g_analogOutput = {B_IA, B_IB, A_IA, A_IB}
-    // B_IA = left forward, B_IB = left reverse
-    // A_IA = right forward, A_IB = right reverse
-
     if (leftCmd >= 0.0f) {
-        g_analogOutput[0] = (double)toDuty(leftCmd); // left forward
-        g_analogOutput[1] = 0.0;                     // left reverse off
+        g_analogOutput[0] = (double)toDuty(leftCmd); // left forward (B_IA)
+        g_analogOutput[1] = 0.0;                     // left reverse off (B_IB)
     } else {
         g_analogOutput[0] = 0.0;
-        g_analogOutput[1] = (double)toDuty(-leftCmd); // left reverse
+        g_analogOutput[1] = (double)toDuty(-leftCmd); // left reverse (B_IB)
     }
 
     if (rightCmd >= 0.0f) {
-        g_analogOutput[2] = (double)toDuty(rightCmd); // right forward
-        g_analogOutput[3] = 0.0;                      // right reverse off
+        g_analogOutput[2] = (double)toDuty(rightCmd); // right forward (A_IA)
+        g_analogOutput[3] = 0.0;                      // right reverse off (A_IB)
     } else {
         g_analogOutput[2] = 0.0;
-        g_analogOutput[3] = (double)toDuty(-rightCmd); // right reverse
+        g_analogOutput[3] = (double)toDuty(-rightCmd); // right reverse (A_IB)
     }
 
-    // Write PWM duty using the modern API from the docs:
-    // ledcWrite(pin, duty) where pin was previously attached via ledcAttach(...)
+     // Write PWM duty using LEDC channels (documented API)
     for (uint8_t i = 0; i < N_MOTOR; ++i) {
         uint32_t duty = (uint32_t)constrain((long)round(g_analogOutput[i]), 0L, (long)MAX_ADC);
-        ledcWrite(MOTOR_PINS[i], duty);
+        uint8_t ch = MOTOR_PINS[i];
+        // uint8_t ch = MOTOR_CHANNELS[i];
+        // writes duty to the LEDC channel
+        ledcWriteChannel(ch, duty);
     }
 }
-    
+

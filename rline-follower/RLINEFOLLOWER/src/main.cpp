@@ -8,16 +8,18 @@ void setup() {
   for (auto &ii: IR_PINS) pinMode(ii, INPUT);
   for (auto &ii: MOTOR_PINS) pinMode(ii, OUTPUT);
 
-  // use channels 0..3, one per motor pin
-  // frequency 20000 Hz, 12-bit resolution (0..4095)
+  // frequency 20000 hz, 12-bit resolution 0 to 4095
   constexpr uint16_t freq = 20000;
   constexpr uint8_t resolution = 12; // ADC = 4096 = 12 bits
 
-  // Attach each motor pin to LEDC with desired freq & resolution.
-  // ledcAttach(pin, freq, resolution) will choose/configure a channel for that pin.
   for (uint8_t ii = 0; ii < N_MOTOR; ii++) {
-    ledcAttach(MOTOR_PINS[ii], freq, resolution);
-    ledcWrite(MOTOR_PINS[ii], 0);
+    uint8_t ch = MOTOR_CHANNELS[ii]; // channel index 0..n
+    // Attach pin to explicit channel, with requested frequency/resolution.
+    if (!ledcAttachChannel(MOTOR_PINS[ii], freq, resolution, ch)) {
+      Serial.print("ledcAttachChannel failed for pin "); Serial.println(MOTOR_PINS[ii]);
+    }
+    // Ensure channel starts at 0 duty
+    ledcWriteChannel(ch, 0);
   }
 
   // PID settings
@@ -87,6 +89,11 @@ void loop() {
   g_settings[0] = g_controlBuffer[3]; // SETTING_WHITEorBLACK
   g_settings[1] = g_controlBuffer[4]; // GOGO_STOPSTOP
 
+  // determine whether the track is white or black
+  for(uint8_t ii=0; ii < N_IR; ii++)
+    g_lineBuffer[ii] = getLineValue(ii);
+
+
   // ===========================================
   // PROCESSING PROPER
   // ===========================================
@@ -104,8 +111,16 @@ void loop() {
   speed.computeMeasuredSpeed();         // i dont hav time to design the architecture for this..
   speed.doPID();
 
+  if (g_settings[1] == 1){
+    doGoForward();  
+  }
+  else {
+    for (uint8_t ii = 0; ii < N_MOTOR; ++ii) {
+      ledcWriteChannel(MOTOR_PINS[ii], 0);
+      g_analogOutput[ii] = 0.0;
+    }
+  }
   
-  doGoForward();
   // carv = carv + steering.output * TIME_STEP;
   // set the new variables for the next frame
   // setpoint is always 0
