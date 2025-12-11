@@ -1,5 +1,6 @@
 # folders:
-### deprecated source files 
+---
+### DEPRECATED SRC FILES
 #### for platformio
 - RECEVEIRE **for transmitter**
 - RECEVIER_FINAL **for receiver**
@@ -10,8 +11,9 @@
 
 --- 
 
-### final tings
+### FINAL TINGS
 - macaddress (flash this to whatever)
 - rline-follower/RLINEFOLLOWER
 - tline-follower/TLINEFOLLOWER
+
 
