@@ -5,10 +5,10 @@
 // =========================================================
 // main driver motors
 // outputs
-#define B_IA        19  // pwm
-#define B_IB        18  // pwm
-#define A_IA        17  // pwm
-#define A_IB        16  // pwm
+#define BIA        19  // pwm   left fwd
+#define BIB        18  // pwm   left bk
+#define AIA        17  // pwm   right fwd
+#define AIB        16  // pwm   right bk
 
 // IR sensors
 // inputs
@@ -31,10 +31,15 @@ constexpr uint8_t N_MOTOR = 4;  // must match sender
 constexpr uint16_t MAX_ADC= 4095;  // must match sender
 
 constexpr uint8_t IR_PINS[N_IR] = {IR_LA, IR_LB, IR_RY, IR_RZ};
-constexpr uint8_t MOTOR_PINS[N_MOTOR] = {B_IA, B_IB, A_IA, A_IB};
+constexpr uint8_t MOTOR_PINS[N_MOTOR] = {BIA, BIB, AIA, AIB};
 
 
 // =========================================================
 // global variables
 extern double g_controlBuffer[N_RECEIVE_INPUTS]; // the received buffer (5)
 extern std::bitset<N_IR> g_lineBuffer;  // the IR sensors
+
+
+// =========================================================
+// prototypes
+void doGoForward();
